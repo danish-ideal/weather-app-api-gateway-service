@@ -18,8 +18,6 @@ async fetchCountries(countryName:string){
    const result =  await axios.get(`${this.configService.get<string>('COUNTRY_API')}${countryName}`)
    return result.data
   } catch (error) {
-    console.log(error);
-    
     throw new HttpException('Country does not exist',HttpStatus.BAD_REQUEST)
   }
   
@@ -32,7 +30,8 @@ try {
    
    return await getCountryWithWeather(result,this.weatherApi) 
 } catch (error) {
-    throw new GatewayTimeoutException(`Connection to country service is interrupted ${error}`)
+  
+    throw new GatewayTimeoutException(error)
 }
   }
 

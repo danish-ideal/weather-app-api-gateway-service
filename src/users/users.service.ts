@@ -12,8 +12,7 @@ export class UsersService {
         try {
          return await firstValueFrom(this.userService.send({cmd:'create_user'},userData))
         } catch (error) {
-          console.log(error);
-           if(error.statusCode) throw new InternalServerErrorException(error.message)
+           if(error.statusCode==409) throw new InternalServerErrorException(error.message)
           throw new GatewayTimeoutException('User service connection failed');
         }
       }
@@ -24,7 +23,6 @@ export class UsersService {
             let tokens =  this.authService.generateTokens(user)
             return {...user,...tokens}
       } catch (error) {
-        console.log(error);
         if(error.statusCode) throw new InternalServerErrorException({statusCode:error.statusCode,message:error.message});
        throw new GatewayTimeoutException('User service connection failed');
       }
